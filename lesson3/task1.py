@@ -5,20 +5,18 @@ def div(a, b):
     return a / b
 
 
-def main():
+def input_float(output):
     while True:
         try:
-            a = float(input('делимое = '))
-            break
+            return float(input(output))
         except:
-            continue
-    while True:
-        try:
-            b = float(input('делитель = '))
-            break
-        except:
+            print('нужно вещественное число')
             continue
 
+
+def main():
+    a = input_float('делимое = ')
+    b = input_float('делитель = ')
     print(f'a/b = {div(a, b)}')
 
 
