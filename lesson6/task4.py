@@ -28,8 +28,8 @@ class Car:
     def __running(self):
         while self._speed >= 0:
             self.show_speed()
-            self._speed += self._acceleration * 0.1 if self._speed <= Car.max_speed else Car.max_speed
-            sleep(0.1)
+            self._speed += self._acceleration * 0.5 if self._speed <= __class__.max_speed else __class__.max_speed
+            sleep(0.5)
         self._speed = 0
 
     def stop(self, braking: float):
@@ -65,7 +65,7 @@ class CarWithCC(Car):
             if (__class__.speed_limit - self._speed) / self._acceleration < 0:
                 self._acceleration = -self._acceleration
             sleep(0.1)
-        print('Cruiz control disabled')
+        print(f'{self.name} - cruiz control disabled')
 
     def go(self, acceleration: float, cruiz_control=False):
         self._cruiz_control_enable = cruiz_control
@@ -98,7 +98,6 @@ class PoliceCar(CarWithCC):
     '''
     полицейская машина с сиреной
     '''
-
     max_speed = 300
 
     def __init__(self, color, name):
@@ -109,15 +108,22 @@ class PoliceCar(CarWithCC):
     def seren(self):
         '''сирена в своем потоке'''
 
-        #TODO: разобраться с проблемой ModuleNotFoundError: No module named gi
+        # TODO: разобраться с проблемой ModuleNotFoundError: No module named gi
+        # решено
+
+        #TODO реализовать позднее статическое связывание для max_speed
+        # вопрос к Евгению - как это сделать?
+        # чтоб в родительскоам методе Car._running() иметь доступ к переопределенному PoliceCar.max_speed
+        # попробовал __class__.max_speed - не работает, дает Car.max_speed
+
 
         while self._seren_enable:
             playsound('seren.mp3')
 
-    def go(self, acceleration: float, cruiz_contril=False, seren=False):
+    def go(self, acceleration: float, cruiz_control=False, seren=False):
         self._seren_enable = True;
         self._seren_tread.start()
-        super().go(acceleration)
+        super().go(acceleration, cruiz_control)
 
     def stop(self, braking: float):
         self._seren_enable = False
@@ -127,12 +133,13 @@ class PoliceCar(CarWithCC):
 ''' 
 Художественный фильм (блокбастер) 'Опасная погоня'
 полицеский бобик преследует вишневую девятку'''
-
 car = TownCar('вишневая', 'девятка')
 police_car = PoliceCar('желтый', 'бобик')
-
-car.go(50, True)
-police_car.go(70, True, True)
+car.go(20, True)
 sleep(5)
-car.stop(100)
-police_car.stop(150)
+police_car.go(40, True, True)
+sleep(5)
+car.stop(40)
+police_car.stop(80)
+
+
