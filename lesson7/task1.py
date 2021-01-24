@@ -2,7 +2,7 @@ class Matrix:
     """Класс описывающий линейное пространство матриц"""
 
     def __init__(self, matrix=None, *args, dim_r=0, dim_c=0):
-        if matrix:
+        if type(matrix) == list:
             self._body = matrix;
         else:
             self._body = [[0 for i in range(dim_r)] for j in range(dim_c)]
