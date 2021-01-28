@@ -2,7 +2,7 @@ class Complex:
 
     @staticmethod
     def zero():
-        return Complex(0, 0)
+        return Complex()
 
     @staticmethod
     def i():
@@ -12,7 +12,7 @@ class Complex:
     def one():
         return Complex(1, 0)
 
-    def __init__(self, a: float, b: float):
+    def __init__(self, a=0, b=0):
         self._a = a
         self._b = b
 
@@ -40,10 +40,10 @@ i = Complex.i()
 one = Complex.one()
 zero = Complex.zero()
 
-print(one*i)
-print(one+z)
-print(zero*z)
-print(z*z)
-print(z*i)
+print(one * i)
+print(one + z)
+print(zero * z)
+print(z * z)
+print(z * i)
 print(-z)
-print(i*i)
+print(i * i)
